@@ -1,6 +1,6 @@
 Get source repository.
 ```
-git clone https://github.com/baiwei0427/COMP4621-2018S.git
+git clone https://github.com/snowzjx/COMP4621-2018S.git
 ```
 
 Move to directory of lab 1 and compile:
