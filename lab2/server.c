@@ -52,6 +52,8 @@ int main(int argc, char **argv)
                 }
 
                 /* print client (remote side) address (IP : port) */
+                /* inet_ntop: converts the network address into a character string */
+                /* https://www.systutorials.com/docs/linux/man/3-inet_ntop/ */
                 inet_ntop(AF_INET, &(cliaddr.sin_addr), ip_str, INET_ADDRSTRLEN);
                 printf("Incoming connection from %s : %hu\n", ip_str, ntohs(cliaddr.sin_port));
 
