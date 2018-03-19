@@ -9,19 +9,21 @@
 
 int main(int argc, char *argv[])
 {
-        int sockfd, n, x, y, bytes_wrt, len;
+        int sockfd, n, bytes_wrt, len;
+	char *filename;
         struct sockaddr_in servaddr;
         char rcv_buff[MAXLINE], wrt_buff[MAXLINE];
         memset(&wrt_buff, 0, sizeof(wrt_buff));
         memset(&rcv_buff, 0, sizeof(rcv_buff));
 
-        if (argc != 3) {
-                printf("Usage: %s [number 1] [number 2]\n", argv[0]);
+        if (argc != 2) {
+                printf("Usage: %s [file name]\n", argv[0]);
                 return 0;
         }
 
-        x = atoi(argv[1]);
-        y = atoi(argv[2]);
+        filename = argv[1];
+
+	printf("Fetch file '%s' from server ...\n", filename);
 
         /* init socket */
         sockfd = socket(AF_INET, SOCK_STREAM, 0);	/* TCP */
@@ -43,7 +45,7 @@ int main(int argc, char *argv[])
         }
 
         /* write the request */
-        sprintf(wrt_buff, "%d %d\n", x, y);
+        sprintf(wrt_buff, "%s\n", filename);
         bytes_wrt = 0;
         len = strlen(wrt_buff);
         while (bytes_wrt < len) {

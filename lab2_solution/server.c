@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <sys/socket.h>
 #include <sys/types.h>
@@ -12,10 +13,12 @@
 int main(int argc, char **argv)
 {
         int listenfd, connfd, bytes_wrt, bytes_rcv, total_bytes_wrt, sign;
-        int nums[2] = {0 ,0};
+	char filename[128];
         struct sockaddr_in serv_addr, cli_addr;
         socklen_t len = sizeof(struct sockaddr_in);
         char ip_str[INET_ADDRSTRLEN], wrt_buff[MAXLINE], rcv_buff[MAXLINE];
+	int index = 0;
+	FILE *file;
 
         /* initialize server socket */
         listenfd = socket(AF_INET, SOCK_STREAM, 0); /* SOCK_STREAM : TCP */
@@ -67,11 +70,20 @@ int main(int argc, char **argv)
                 }
 
                 /* parse request */
-                sscanf(rcv_buff, "%d %d\n", &nums[0], &nums[1]);
+                sscanf(rcv_buff, "%s\n", filename);
 
-                /* generate response */
-                snprintf(wrt_buff, sizeof(wrt_buff) - 1, "%d", nums[0] + nums[1]);
-                printf("%d + %d = %d\n", nums[0], nums[1], nums[0] + nums[1]);
+		/* read from file */
+		printf("Reading from file '%s' ...\n", filename);
+				
+		file = fopen(filename, "r");
+		if (!file) {
+                	snprintf(wrt_buff, sizeof(wrt_buff) - 1, "%s\n", "The file your requested does not exist ...");
+		} else {
+			while ((wrt_buff[index] = fgetc(file)) != EOF) {
+				++index;
+    			}	
+			fclose (file);
+		}
 
                 /* send response */
                 bytes_wrt = 0;
