@@ -9,7 +9,7 @@ git pull
 
 Move to directory of lab 3 and compile:
 ```
-cd COMP4621-2017S/lab3
+cd COMP4621-2018S/lab3
 gcc pthread_server.c -lpthread -o pthread_server
 gcc server.c -o server
 ```
